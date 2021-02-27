@@ -54,7 +54,7 @@ router.post('/', auth,  async (req, res) => {
     try {
       // Using upsert option (creates new doc if no match is found):
       let profile = await models.profileModel.update(
-        { name: req.body.name, gender: req.body.gender, age:req.body.age, city: req.body.city, country: req.body.country, univ: req.body.univ, sem: req.body.sem}, 
+        { name: req.body.name, gender: req.body.gender, age:req.body.age, city: req.body.city, country: req.body.country, univ: req.body.univ, sem: req.body.sem, course: req.body.course,food: req.body.food,smoke: req.body.smoke,drink: req.body.drink,cook: req.body.cook,notes: req.body.notes,linkedin: req.body.linkedin,roomieGender: req.body.roomieGender,roomieAge: req.body.roomieAge,roomieCountry: req.body.roomieCountry,roomieUniv: req.body.roomieUniv,roomieSem: req.body.roomieSem,roomieCourse: req.body.roomieCourse,roomieFood: req.body.roomieFood,roomieSmoke: req.body.roomieSmoke,roomieDrink: req.body.roomieDrink,roomieCook: req.body.roomieCook}, 
         { where: { id: req.user.id }}
       );
 

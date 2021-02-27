@@ -81,7 +81,24 @@ router.post(
 				city: '',
 				country: '',
 				univ: '',
-				sem: ''
+				sem: '',
+				course:'',
+				food:'',
+				smoke:'',
+				drink:'',
+				cook:'',
+				notes:'',
+				linkedin:'',
+				roomieGender:'',
+				roomieAge:'',
+				roomieCountry:'',
+				roomieUniv:'',
+				roomieSem:'',
+				roomieCourse:'',
+				roomieFood:'',
+				roomieSmoke:'',
+				roomieDrink:'',
+				roomieCook:''
 			})
 
 			jwt.sign(

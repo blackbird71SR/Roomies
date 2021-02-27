@@ -30,10 +30,10 @@ const Dashboard = ({
             <h2> Your Information</h2>
             <Row>
               <Col>
-                Gender: {profile.gender}
+                {profile.gender}
               </Col>
               <Col>
-                Age: {profile.age}
+                {profile.age}
               </Col>
               <Col>
                 {profile.city}, {profile.country}
@@ -41,7 +41,63 @@ const Dashboard = ({
             </Row>
             <Row>
               <Col>
-              {profile.univ} - {profile.sem}
+              {profile.univ} - {profile.sem} - {profile.course}
+              </Col>
+            </Row>
+            <hr/>
+            <Row>
+              <Col>
+                {profile.food}
+              </Col>
+              <Col>
+                {profile.smoke}
+              </Col>
+              <Col>
+                {profile.drink}
+              </Col>
+              <Col>
+                {profile.cook}
+              </Col>
+            </Row>
+            <hr/>
+            <Row>
+              <Col>
+                <a href={profile.linkedin}>LinkedIn</a>
+              </Col>
+              <Col>
+                {profile.notes}
+              </Col>
+            </Row>
+            <h2> Roomate Preferences</h2>
+            <Row>
+              <Col>
+                {profile.roomieGender}
+              </Col>
+              <Col>
+                {profile.roomieAge}
+              </Col>
+              <Col>
+                {profile.roomieCountry}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+              {profile.roomieUniv} - {profile.roomieSem} - {profile.roomieCourse}
+              </Col>
+            </Row>
+            <hr/>
+            <Row>
+              <Col>
+                {profile.roomieFood}
+              </Col>
+              <Col>
+                {profile.roomieSmoke}
+              </Col>
+              <Col>
+                {profile.roomieDrink}
+              </Col>
+              <Col>
+                {profile.roomieCook}
               </Col>
             </Row>
           </div>

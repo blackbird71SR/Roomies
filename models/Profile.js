@@ -6,38 +6,106 @@ module.exports = (sequelize) => {
 			primaryKey: true,
 			allowNull: false,
 		},
-    name: {
+		name: {
 			type: Sequelize.STRING,
 			allowNull: false,
 		},
 		email: {
 			type: Sequelize.STRING,
 			allowNull: false,
-      uniqe: true
+      		uniqe: true
 		},
 		gender: {
 			type: Sequelize.STRING,
 			allowNull: true,
 		},
-    age: {
+    	age: {
 			type: Sequelize.STRING,
 			allowNull: true,
 		},
-    city: {
+    	city: {
 			type: Sequelize.STRING,
 			allowNull: true,
 		},
-    country: {
+    	country: {
 			type: Sequelize.STRING,
 			allowNull: true,
 		},
-    univ: {
+    	univ: {
 			type: Sequelize.STRING,
 			allowNull: true,
 		},
-    sem: {
+    	sem: {
 			type: Sequelize.STRING,
 			allowNull: true,
-		}
+		},
+		course: {
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		food:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		smoke:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		drink:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		cook:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		notes:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		linkedin:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		roomieGender:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		roomieAge:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		roomieCountry:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		roomieUniv:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		roomieSem:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		roomieCourse:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		roomieFood:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		roomieSmoke:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		roomieDrink:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		roomieCook:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
 	});
 };
