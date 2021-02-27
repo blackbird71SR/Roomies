@@ -76,7 +76,7 @@ export const createProfile = (
         'Content-Type': 'application/json'
       }
     };
-
+    console.log(formData);
     const res = await axios.post('/api/profile', formData, config);
 
     dispatch({

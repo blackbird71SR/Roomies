@@ -8,12 +8,15 @@ const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
 
+const { models } = require('../../sequalize');
+
+
 // @route    GET api/auth
 // @desc     Get user by token
 // @access   Private
 router.get('/', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await models.userModel.findOne({ where: { id: req.user.id } })
     res.status(200).json(user);
   } catch (err) {
     console.error(err.message);
@@ -39,7 +42,7 @@ router.post(
     const { email, password } = req.body;
 
     try {
-      let user = await User.findOne({ email });
+      let user = await models.userModel.findOne({ where: { email: email } });
 
       if (!user) {
         return res
