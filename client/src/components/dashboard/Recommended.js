@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import {getProfiles, getRecommendations } from '../../actions/profile';
-import ProfileItem from "./ProfileItem";
+import RecommendItem from "./RecommendItem";
 import {Form, Col, Button} from 'react-bootstrap'
 
 const Profiles = ({
@@ -22,7 +22,7 @@ const Profiles = ({
       <div className="profiles">
               {recommendations.length > 0 ? (
                 recommendations.map((profile) => (
-                  <ProfileItem key={profile.id} profile={profile} />
+                  <RecommendItem key={profile.id} profile={profile} />
                 ))
               ) : (
                 <h4>No recommendations found...Please update your profile</h4>
