@@ -76,6 +76,7 @@ router.post(
 				id: userData.id,
 				name: firstName + ' ' + lastName,
 				email: email,
+				avatar:'',
 				gender: '',
 				age: '',
 				city: '',

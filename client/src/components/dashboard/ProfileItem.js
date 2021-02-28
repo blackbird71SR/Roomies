@@ -11,19 +11,23 @@ const ProfileItem = ({
     age,
     univ,
     city,
-    country
+    country,
+    avatar,
+    course,
+    sem
   },
 }) => {
   return (
     <div className="profile bg-light">
-      {/* <img className="round-img" src={avatar} alt="" /> */}
+      <img className="round-img" src={avatar} alt="" />
       <div>
         <h2>{name}</h2>
+        <p>{city} <span> , {country}</span></p>
         <p>
-          {city}
-          {city && <span> , {country}</span>}
+        <span className="font-weight-bold">University: </span>{univ}<br/>
+        <span className="font-weight-bold">Course: </span>{course}<br/>
+        <span className="font-weight-bold">Semster: </span>{sem}<br/>
         </p>
-        <p>{univ}</p>
         <Link to={`/profile/${id}`} className="btn btn-primary">
           View Profile
         </Link>

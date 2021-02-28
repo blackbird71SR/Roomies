@@ -15,6 +15,7 @@ const EditProfile = ({
   const [formData, setFormData] = useState({
     name: '',
     gender: '',
+    avatar:'',
     age:'',
     city: '',
     country: '',
@@ -44,6 +45,7 @@ const EditProfile = ({
     setFormData({
       name: loading || !profile.name ? '':profile.name,
       gender: loading || !profile.gender ? '':profile.gender,
+      avatar: loading || !profile.avatar ? '':profile.avatar,
       age: loading || !profile.age ? '':profile.age,
       city: loading || !profile.city ? '':profile.city,
       country: loading || !profile.country ? '':profile.country,
@@ -69,7 +71,7 @@ const EditProfile = ({
     })
   }, [loading, getCurrentProfile]);
 
-  const { name, gender, age, city, country, univ, sem, course,food,smoke,drink,cook,notes,linkedin,roomieGender,roomieAge,roomieCountry,roomieUniv,roomieSem,roomieCourse,roomieFood,roomieSmoke,roomieDrink,roomieCook } = formData;
+  const { name, gender, avatar, age, city, country, univ, sem, course,food,smoke,drink,cook,notes,linkedin,roomieGender,roomieAge,roomieCountry,roomieUniv,roomieSem,roomieCourse,roomieFood,roomieSmoke,roomieDrink,roomieCook } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -216,6 +218,11 @@ const EditProfile = ({
           </Form.Row>
 
           <Form.Row>
+
+          <Form.Group as={Col} controlId="formLinkedin">
+              <Form.Label>Profile Photo Link</Form.Label>
+              <Form.Control name='avatar' value={avatar} placeholder="Enter Profile Photo URL" onChange={onChange}/>
+            </Form.Group>
 
             <Form.Group as={Col} controlId="formLinkedin">
               <Form.Label>Linkedin</Form.Label>

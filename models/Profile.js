@@ -15,6 +15,10 @@ module.exports = (sequelize) => {
 			allowNull: false,
       		uniqe: true
 		},
+		avatar: {
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
 		gender: {
 			type: Sequelize.STRING,
 			allowNull: true,
