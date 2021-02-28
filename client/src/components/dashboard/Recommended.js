@@ -2,30 +2,30 @@ import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
-import {getProfiles } from '../../actions/profile';
+import {getProfiles, getRecommendations } from '../../actions/profile';
 import ProfileItem from "./ProfileItem";
 import {Form, Col, Button} from 'react-bootstrap'
 
 const Profiles = ({
-  getProfiles,
-  profile: { profiles, loading },
+  getRecommendations,
+  profile: { recommendations, loading },
 }) => {
   useEffect(() => {
-    getProfiles()
-  }, [getProfiles]);
+    getRecommendations()
+  }, [getRecommendations]);
 
   return loading ? (
     <Spinner />
   ) : (
     <Fragment>
-      <h1 className='text-center display-3'>Users</h1>
+      <h1 className='text-center display-3'>Your Recommendations</h1>
       <div className="profiles">
-              {profiles.length > 0 ? (
-                profiles.map((profile) => (
-                  <ProfileItem key={profile._id} profile={profile} />
+              {recommendations.length > 0 ? (
+                recommendations.map((profile) => (
+                  <ProfileItem key={profile.id} profile={profile} />
                 ))
               ) : (
-                <h4>No Profiles found...</h4>
+                <h4>No recommendations found...Please update your profile</h4>
               )}
             </div>
     </Fragment>
@@ -33,7 +33,7 @@ const Profiles = ({
 };
 
 Profiles.propTypes = {
-  getProfiles: PropTypes.func.isRequired,
+  getRecommendations: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired
 };
 
@@ -43,5 +43,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {getProfiles}
+  {getRecommendations}
 )(Profiles);

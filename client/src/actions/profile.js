@@ -4,6 +4,8 @@ import { setAlert } from './alert';
 import {
   GET_PROFILE,
   GET_PROFILES,
+  GET_RECOMMENDATIONS,
+  RECOMMENDATIONS_ERROR,
   PROFILE_ERROR,
   UPDATE_PROFILE,
   CLEAR_PROFILE,
@@ -47,6 +49,27 @@ export const getProfiles = () => async dispatch => {
   }
 };
 
+// Get all profiles
+export const getRecommendations = () => async dispatch => {
+  dispatch({ type: CLEAR_PROFILE });
+
+  try {
+    const res = await axios.get('/api/profile/recommended');
+
+    dispatch({
+      type: GET_RECOMMENDATIONS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: RECOMMENDATIONS_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+
+
 // Get profile by ID
 export const getProfileById = userId => async dispatch => {
   try {
@@ -76,7 +99,6 @@ export const createProfile = (
         'Content-Type': 'application/json'
       }
     };
-    console.log(formData);
     const res = await axios.post('/api/profile', formData, config);
 
     dispatch({

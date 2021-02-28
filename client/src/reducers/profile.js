@@ -1,5 +1,7 @@
 import {
 	GET_PROFILE,
+	GET_RECOMMENDATIONS,
+	RECOMMENDATIONS_ERROR,
 	PROFILE_ERROR,
 	CLEAR_PROFILE,
 	UPDATE_PROFILE,
@@ -10,6 +12,7 @@ const initialState = {
 	profile: null,
 	profiles: [],
 	repos: [],
+	recommendations:[],
 	loading: true,
 	error: {}
 };
@@ -37,6 +40,19 @@ export default function(state = initialState, action) {
 				loading: false
 			};
 		case PROFILE_ERROR:
+			return {
+				...state,
+				error: payload,
+				loading: false,
+				profile: null
+			};
+		case GET_RECOMMENDATIONS:
+			return {
+				...state,
+				recommendations: payload,
+				loading: false
+			};
+		case RECOMMENDATIONS_ERROR:
 			return {
 				...state,
 				error: payload,
