@@ -1,7 +1,7 @@
 {
-  "name": "boilerplate",
+  "name": "roomies",
   "version": "1.0.0",
-  "description": "Mern Boilerplate with auth",
+  "description": "Find roomamtes Tinder Style!",
   "main": "server.js",
   "scripts": {
     "start": "node server",
