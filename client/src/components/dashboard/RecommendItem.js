@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {ButtonGroup, Button} from 'react-bootstrap'
+import { rejectUser, acceptUser } from "../../actions/profile";
+
 
 const RecommendItem = ({
   profile: {
@@ -16,8 +18,9 @@ const RecommendItem = ({
     avatar,
     course,
     sem,
-    score
-  },
+    score,
+    status
+  },rejectUser, acceptUser
 }) => {
   let color = 'dark'
   if(score >= 75){
@@ -41,10 +44,13 @@ const RecommendItem = ({
                 <span className="font-weight-bold">Course: </span>{course}<br/>
                 <span className="font-weight-bold">Semster: </span>{sem}<br/>
                 </p>
+                <p>
+                  <span className="font-weight-bold">Current Status: </span>{status}<br/>
+                </p>
                 <ButtonGroup aria-label="Basic example">
-                    <Button variant="danger">Reject</Button>
+                    <Button variant="danger" onClick={() => rejectUser(id)}>Reject</Button>
                     <Link to={`/profile/${id}`}><Button variant="secondary">View Profile</Button></Link>
-                    <Button variant="success">Accept</Button>
+                    <Button variant="success" onClick={() => acceptUser(id)}>Accept</Button>
                 </ButtonGroup>
             </div>
         </div>
@@ -54,6 +60,8 @@ const RecommendItem = ({
 
 RecommendItem.propTypes = {
   profile: PropTypes.object.isRequired,
+  rejectUser: PropTypes.func.isRequired,
+  acceptUser: PropTypes.func.isRequired
 };
 
-export default connect()(RecommendItem);
+export default connect(null, {rejectUser, acceptUser})(RecommendItem);

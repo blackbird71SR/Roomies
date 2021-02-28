@@ -50,12 +50,21 @@ router.get('/recommended', auth, async (req, res) => {
     }
     let otherprofiles = await models.profileModel.findAll();
     otherprofiles = otherprofiles.filter(profile => profile.dataValues.id !== userProps.id)
+    // otherprofiles = otherprofiles.filter(profile => !userProps.rejected.includes(profile.dataValues.id))
 
     // if(userProps.roomieUniv !== "Don't Care"){
     //   otherprofiles = otherprofiles.filter(profile => profile.dataValues.univ === userProps.roomieUniv)
     // }
 
     const scoredProfiles = otherprofiles.map((profile)=>{
+      if(userProps.rejected.includes(profile.dataValues.id)){
+        profile.dataValues.status = 'Rejected'
+      }else if(userProps.accepted.includes(profile.dataValues.id)){
+        profile.dataValues.status = 'Accepted'
+      }else{
+        profile.dataValues.status = '-'
+      }
+
       const otherProps = profile.dataValues
       let score = 0
 
@@ -161,6 +170,321 @@ router.get('/recommended', auth, async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
+router.post('/reject', auth,  async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  let profile = await models.profileModel.findOne({ where: { id: req.user.id } });
+  let userProps = profile.dataValues
+
+  let rejectedArray = userProps.rejected
+  if(userProps.rejected.includes(req.body.id)){
+    rejectedArray = userProps.rejected
+  }else{
+    rejectedArray = userProps.rejected.concat(req.body.id)
+  }
+
+  const index = userProps.accepted.indexOf(req.body.id);
+  if (index > -1) {
+    userProps.accepted.splice(index, 1);
+  }
+
+
+  try {
+    // Using upsert option (creates new doc if no match is found):
+    let profile = await models.profileModel.update(
+      { rejected: rejectedArray, accepted: userProps.accepted}, 
+      { where: { id: req.user.id }}
+    );
+
+    profile = await models.profileModel.findOne({ where: { id: req.user.id } });
+    userProps = profile.dataValues
+
+    if (!profile) {
+      return res.status(400).json({ msg: 'There is no profile for this user' });
+    }
+
+    let otherprofiles = await models.profileModel.findAll();
+    otherprofiles = otherprofiles.filter(profile => profile.dataValues.id !== userProps.id)
+    // otherprofiles = otherprofiles.filter(profile => !userProps.rejected.includes(profile.dataValues.id))
+
+
+
+    const scoredProfiles = otherprofiles.map((profile)=>{
+      if(userProps.rejected.includes(profile.dataValues.id)){
+        profile.dataValues.status = 'Rejected'
+      }else if(userProps.accepted.includes(profile.dataValues.id)){
+        profile.dataValues.status = 'Accepted'
+      }else{
+        profile.dataValues.status = '-'
+      }
+
+      const otherProps = profile.dataValues
+      let score = 0
+
+      //country
+      if(userProps.roomieCountry === "Don't Care" || userProps.roomieCountry === otherProps.country){
+        score += 50
+      }
+      if(otherProps.roomieCountry === "Don't Care" || otherProps.roomieCountry === userProps.country){
+        score += 50
+      }
+
+      //gender
+      if(userProps.roomieGender === "Don't Care" || userProps.roomieGender === otherProps.gender){
+        score += 50
+      }
+      if(otherProps.roomieGender === "Don't Care" || otherProps.roomieGender === userProps.gender){
+        score += 50
+      }
+      
+      //age
+      if(userProps.roomieAge === "Don't Care" || userProps.roomieAge === otherProps.age){
+        score += 50
+      }
+      if(otherProps.roomieAge === "Don't Care" || otherProps.roomieAge === userProps.age){
+        score += 50
+      }
+      
+      //univ
+      if(userProps.roomieUniv === "Don't Care" || userProps.roomieUniv === otherProps.univ){
+        score += 50
+      }
+      if(otherProps.roomieUniv === "Don't Care" || otherProps.roomieUniv === userProps.univ){
+        score += 50
+      }
+      
+      //course
+      if(userProps.roomieCourse === "Don't Care" || userProps.roomieCourse === otherProps.course){
+        score += 50
+      }
+      if(otherProps.roomieCourse === "Don't Care" || otherProps.roomieCourse === userProps.course){
+        score += 50
+      }
+
+      //semester
+      if(userProps.roomieSem === "Don't Care" || userProps.roomieSem === otherProps.sem){
+        score += 50
+      }
+      if(otherProps.roomieSem === "Don't Care" || otherProps.roomieSem === userProps.sem){
+        score += 50
+      }
+
+      //food
+      if(userProps.roomieFood === "Don't Care" || userProps.roomieFood === otherProps.food){
+        score += 50
+      }
+      if(otherProps.roomieFood === "Don't Care" || otherProps.roomieFood === userProps.food){
+        score += 50
+      }
+
+      //smoking
+      if(userProps.roomieSmoke === "Don't Care" || userProps.roomieSmoke === otherProps.smoke){
+        score += 50
+      }
+      if(otherProps.roomieSmoke === "Don't Care" || otherProps.roomieSmoke === userProps.smoke){
+        score += 50
+      }
+
+      //drinking
+      if(userProps.roomieDrink === "Don't Care" || userProps.roomieDrink === otherProps.drink){
+        score += 50
+      }
+      if(otherProps.roomieDrink === "Don't Care" || otherProps.roomieDrink === userProps.drink){
+        score += 50
+      }
+
+      //cooking
+      if(userProps.roomieCook === "Don't Care" || userProps.roomieCook === otherProps.cook){
+        score += 50
+      }
+      if(otherProps.roomieCook === "Don't Care" || otherProps.roomieCook === userProps.cook){
+        score += 50
+      }
+
+      profile.dataValues.score = score * 100/ 1000
+    })
+
+    function compare( a, b ) {
+      if ( a.dataValues.score < b.dataValues.score ){
+        return 1;
+      }
+      if ( a.dataValues.score > b.dataValues.score ){
+        return -1;
+      }
+      return 0;
+    }
+    
+    otherprofiles = otherprofiles.sort( compare );
+
+    console.log(otherprofiles);
+    res.status(200).json(otherprofiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+}
+);
+
+router.post('/accept', auth,  async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  let profile = await models.profileModel.findOne({ where: { id: req.user.id } });
+  let userProps = profile.dataValues
+
+  let acceptedArray = userProps.accepted
+  if(userProps.accepted.includes(req.body.id)){
+    acceptedArray = userProps.accepted
+  }else{
+    acceptedArray = userProps.accepted.concat(req.body.id)
+  }
+
+  const index = userProps.rejected.indexOf(req.body.id);
+  if (index > -1) {
+    userProps.rejected.splice(index, 1);
+  }
+
+
+  try {
+    
+    let profile = await models.profileModel.update(
+      { accepted: acceptedArray, rejected: userProps.rejected}, 
+      { where: { id: req.user.id }}
+    );
+
+    profile = await models.profileModel.findOne({ where: { id: req.user.id } });
+    userProps = profile.dataValues
+
+    if (!profile) {
+      return res.status(400).json({ msg: 'There is no profile for this user' });
+    }
+
+    let otherprofiles = await models.profileModel.findAll();
+    otherprofiles = otherprofiles.filter(profile => profile.dataValues.id !== userProps.id)
+    // otherprofiles = otherprofiles.filter(profile => !userProps.rejected.includes(profile.dataValues.id))
+
+
+    const scoredProfiles = otherprofiles.map((profile)=>{
+      if(userProps.rejected.includes(profile.dataValues.id)){
+        profile.dataValues.status = 'Rejected'
+      }else if(userProps.accepted.includes(profile.dataValues.id)){
+        profile.dataValues.status = 'Accepted'
+      }else{
+        profile.dataValues.status = '-'
+      }
+
+      const otherProps = profile.dataValues
+      let score = 0
+
+      //country
+      if(userProps.roomieCountry === "Don't Care" || userProps.roomieCountry === otherProps.country){
+        score += 50
+      }
+      if(otherProps.roomieCountry === "Don't Care" || otherProps.roomieCountry === userProps.country){
+        score += 50
+      }
+
+      //gender
+      if(userProps.roomieGender === "Don't Care" || userProps.roomieGender === otherProps.gender){
+        score += 50
+      }
+      if(otherProps.roomieGender === "Don't Care" || otherProps.roomieGender === userProps.gender){
+        score += 50
+      }
+      
+      //age
+      if(userProps.roomieAge === "Don't Care" || userProps.roomieAge === otherProps.age){
+        score += 50
+      }
+      if(otherProps.roomieAge === "Don't Care" || otherProps.roomieAge === userProps.age){
+        score += 50
+      }
+      
+      //univ
+      if(userProps.roomieUniv === "Don't Care" || userProps.roomieUniv === otherProps.univ){
+        score += 50
+      }
+      if(otherProps.roomieUniv === "Don't Care" || otherProps.roomieUniv === userProps.univ){
+        score += 50
+      }
+      
+      //course
+      if(userProps.roomieCourse === "Don't Care" || userProps.roomieCourse === otherProps.course){
+        score += 50
+      }
+      if(otherProps.roomieCourse === "Don't Care" || otherProps.roomieCourse === userProps.course){
+        score += 50
+      }
+
+      //semester
+      if(userProps.roomieSem === "Don't Care" || userProps.roomieSem === otherProps.sem){
+        score += 50
+      }
+      if(otherProps.roomieSem === "Don't Care" || otherProps.roomieSem === userProps.sem){
+        score += 50
+      }
+
+      //food
+      if(userProps.roomieFood === "Don't Care" || userProps.roomieFood === otherProps.food){
+        score += 50
+      }
+      if(otherProps.roomieFood === "Don't Care" || otherProps.roomieFood === userProps.food){
+        score += 50
+      }
+
+      //smoking
+      if(userProps.roomieSmoke === "Don't Care" || userProps.roomieSmoke === otherProps.smoke){
+        score += 50
+      }
+      if(otherProps.roomieSmoke === "Don't Care" || otherProps.roomieSmoke === userProps.smoke){
+        score += 50
+      }
+
+      //drinking
+      if(userProps.roomieDrink === "Don't Care" || userProps.roomieDrink === otherProps.drink){
+        score += 50
+      }
+      if(otherProps.roomieDrink === "Don't Care" || otherProps.roomieDrink === userProps.drink){
+        score += 50
+      }
+
+      //cooking
+      if(userProps.roomieCook === "Don't Care" || userProps.roomieCook === otherProps.cook){
+        score += 50
+      }
+      if(otherProps.roomieCook === "Don't Care" || otherProps.roomieCook === userProps.cook){
+        score += 50
+      }
+
+      profile.dataValues.score = score * 100/ 1000
+    })
+
+    function compare( a, b ) {
+      if ( a.dataValues.score < b.dataValues.score ){
+        return 1;
+      }
+      if ( a.dataValues.score > b.dataValues.score ){
+        return -1;
+      }
+      return 0;
+    }
+    
+    otherprofiles = otherprofiles.sort( compare );
+
+    console.log(otherprofiles);
+    res.status(200).json(otherprofiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+}
+);
 
 // @route    POST api/profile
 // @desc     Create or update user profile

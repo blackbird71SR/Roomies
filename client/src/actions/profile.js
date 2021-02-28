@@ -7,6 +7,8 @@ import {
   GET_RECOMMENDATIONS,
   RECOMMENDATIONS_ERROR,
   PROFILE_ERROR,
+  REJECT_PROFILE,
+  ACCEPT_PROFILE,
   UPDATE_PROFILE,
   CLEAR_PROFILE,
   ACCOUNT_DELETED,
@@ -68,7 +70,42 @@ export const getRecommendations = () => async dispatch => {
   }
 };
 
+export const rejectUser = (id, history, edit = false) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    console.log(id);
+    const res = await axios.post(`/api/profile/reject`, {'id': id}, config);
+    dispatch({ type: REJECT_PROFILE, payload: res.data });
+    dispatch(setAlert("User Rejected!", "danger"));
+  } catch (err) {
+    dispatch({
+      type: RECOMMENDATIONS_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
 
+export const acceptUser = (id, history, edit = false) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    const res = await axios.post(`/api/profile/accept`, {'id': id}, config);
+    dispatch({ type: ACCEPT_PROFILE, payload: res.data });
+    dispatch(setAlert("User Accepted!", "success"));
+  } catch (err) {
+    dispatch({
+      type: RECOMMENDATIONS_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
 
 // Get profile by ID
 export const getProfileById = userId => async dispatch => {

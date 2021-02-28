@@ -6,6 +6,8 @@ import {
 	CLEAR_PROFILE,
 	UPDATE_PROFILE,
 	GET_PROFILES,
+	REJECT_PROFILE,
+	ACCEPT_PROFILE
 } from '../actions/types';
 
 const initialState = {
@@ -47,6 +49,18 @@ export default function(state = initialState, action) {
 				profile: null
 			};
 		case GET_RECOMMENDATIONS:
+			return {
+				...state,
+				recommendations: payload,
+				loading: false
+			};
+		case REJECT_PROFILE:
+			return {
+				...state,
+				recommendations: payload,
+				loading: false
+			};
+		case ACCEPT_PROFILE:
 			return {
 				...state,
 				recommendations: payload,

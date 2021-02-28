@@ -111,5 +111,15 @@ module.exports = (sequelize) => {
 			type: Sequelize.STRING,
 			allowNull: true,
 		},
+		accepted:{
+			type: Sequelize.ARRAY(Sequelize.INTEGER),
+			allowNull: true,
+			defaultValue: []
+		},
+		rejected:{
+			type: Sequelize.ARRAY(Sequelize.INTEGER),
+			allowNull: true,
+			defaultValue: []
+		}
 	});
 };
