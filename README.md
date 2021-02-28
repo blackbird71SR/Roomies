@@ -1,7 +1,7 @@
 # Roomies
 
 Find Roommates Tinder Style!
-## Tecnologies Used
+## TecHnologies Used
 
 - **MongoDb and Mongoose** - MongoDb as a Database and mongoose as as a Object Data Modeling library for MongoDB and Node.js
 - **Express** - as a backend Framework
