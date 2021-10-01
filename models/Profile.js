@@ -71,6 +71,14 @@ module.exports = (sequelize) => {
 			type: Sequelize.STRING,
 			allowNull: true,
 		},
+		reddit:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
+		twitter:{
+			type: Sequelize.STRING,
+			allowNull: true,
+		},
 		roomieGender:{
 			type: Sequelize.STRING,
 			allowNull: true,
